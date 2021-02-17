@@ -1,0 +1,10 @@
+django
+psycopg2-binary
+Pillow
+django-cors-headers
+django-filter
+djangorestframework
+uwsgi
+django-rest-passwordreset
+pylint
+requests
