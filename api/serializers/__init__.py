@@ -1,4 +1,4 @@
 from .users import (UserModelSerializer, UserLoginSerializer,
-UserSignUpSerializer, UserProfileModelSerializer)
+UserSignUpSerializer, ProfileModelSerializer)
 from .courses import CourseModelSerializer, ResultContestModelSerializer
 from .tests import TestModelSerializer, ResultTestModelSerializer

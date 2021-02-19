@@ -2,56 +2,46 @@
 from django.contrib.auth import password_validation, authenticate
 from django.core.validators import RegexValidator
 
-from api.models import User, ResultContest, ResultTest, ProfileUser
+from api.models import User, ProfileUser
 from rest_framework.authtoken.models import Token
 
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from .courses import ResultContestModelSerializer
-from .tests import ResultTestModelSerializer
 
 
-class UserProfileModelSerializer(serializers.ModelSerializer):
-    courses_finish = serializers.SerializerMethodField('get_courses')
-    tests_finish = serializers.SerializerMethodField('get_tests')
-
-    def get_tests(self, user):
-        qs = ResultTest.objects.filter(user=user)
-        serializer = ResultTestModelSerializer(instance=qs, many=True)
-        data = serializer.data
-        return data
-
-    def get_courses(self, user):
-        qs = ResultContest.objects.filter(user=user)
-        serializer = ResultContestModelSerializer(instance=qs, many=True)
-        data = serializer.data
-        return data
-
+class ProfileModelSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = ProfileUser
         fields = (
-            'id',
-            'username',
-            'email',
-            'first_name',
-            'last_name',
-            'dni',
-            'courses_finish',
-            'tests_finish'
+            'approved_courses',
+            'tests_performed'
+        )
+        read_only_fields = (
+            'approved_courses',
+            'tests_performed'
         )
 
+
 class UserModelSerializer(serializers.ModelSerializer):
+    profile = serializers.SerializerMethodField('get_profile')
+
+    def get_profile(self, user):
+        qs = ProfileUser.objects.filter(user=user).first()
+        serializer = ProfileModelSerializer(instance=qs, many=False)
+        data = serializer.data
+        return data
 
     class Meta:
         model=User
         fields = (
-            'id',
             'username', 
             'email',
             'first_name',
             'last_name',
             'dni',
-            )
+            'profile'
+        )
+
 
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()

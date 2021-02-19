@@ -47,7 +47,7 @@ class ResultContest(ApiModel):
         verbose_name_plural = 'Cursos - Resultados de cuestionarios'
     
     def __str__(self):
-        return self.user
+        return str(self.user)
 
 
 class AnswerQuestion(ApiModel):

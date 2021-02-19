@@ -2,7 +2,6 @@
 from rest_framework import mixins, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django_filters import rest_framework as filters
 
 # Permissions
 from rest_framework.permissions import (
@@ -10,17 +9,25 @@ from rest_framework.permissions import (
     IsAuthenticated
 )
 
-from api.serializers import (UserModelSerializer, UserLoginSerializer,
-UserSignUpSerializer, UserProfileModelSerializer)
+# Serializers
+from api.serializers import (
+        UserModelSerializer, 
+        UserLoginSerializer,
+        UserSignUpSerializer, 
+        ProfileModelSerializer
+)
 
-from api.models import User
+# Models
+from api.models import User, ProfileUser
 
 
-class UserViewSet(viewsets.GenericViewSet,
-                  mixins.RetrieveModelMixin,
+class UserViewSet(mixins.RetrieveModelMixin,
                   mixins.UpdateModelMixin,
-                  mixins.ListModelMixin,
-                  mixins.DestroyModelMixin):
+                  viewsets.GenericViewSet):
+
+    queryset = User.objects.all()
+    serializer_class = UserModelSerializer
+    lookup_field = 'username'
 
     def get_permissions(self):
         """Assign permissions based on action."""
@@ -32,17 +39,7 @@ class UserViewSet(viewsets.GenericViewSet,
             permissions = [IsAuthenticated]
         return [p() for p in permissions]
 
-    def get_serializer_class(self):
-        if self.action == 'retrieve':
-            return UserProfileModelSerializer
-        else:
-            return UserModelSerializer
-    queryset = User.objects.all()
-    filter_backends = (filters.DjangoFilterBackend,)
-    lookup_field = 'username'
-
    #Login y creacion de Token
-
     @action(detail=False, methods=['post'])
     def signup(self, request):
         """User sign up."""
@@ -60,7 +57,18 @@ class UserViewSet(viewsets.GenericViewSet,
         user, token = serializer.save()
         data = {
             'user': UserModelSerializer(user).data,
-            'access_token': token
+            'access_token': token,
         }
         return Response(data, status=status.HTTP_201_CREATED)
+    
+
+    def retrieve(self, request, *args, **kwargs):
+        response = super(UserViewSet, self).retrieve(request, *args, **kwargs)
+        data = {
+            'user': response.data
+        }
+        response.data = data
+        return response
+
+
 

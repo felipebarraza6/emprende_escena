@@ -29,10 +29,13 @@ class User(ApiModel, AbstractUser):
 
     def __str__(self):
         return self.username
+    
+    def get_short_name(self):
+        return self.username
 
 
 class ProfileUser(ApiModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     approved_courses = models.ManyToManyField('api.ResultContest',
             related_name='user_result_contest', blank=True)
     tests_performed = models.ManyToManyField('api.ResultTest',
