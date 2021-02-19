@@ -1,4 +1,3 @@
-
 from django.db import models
 from api.models.utils import ApiModel
 
@@ -9,6 +8,7 @@ class Course(ApiModel):
     image = models.ImageField()
     description = models.CharField(max_length=400)
     tutor_name = models.CharField(max_length=220)
+    passing_score = models.IntegerField()
 
     class Meta:
         verbose_name = 'Curso'

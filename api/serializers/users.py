@@ -2,7 +2,7 @@
 from django.contrib.auth import password_validation, authenticate
 from django.core.validators import RegexValidator
 
-from api.models import User, ResultContest, ResultTest
+from api.models import User, ResultContest, ResultTest, ProfileUser
 from rest_framework.authtoken.models import Token
 
 from rest_framework import serializers
@@ -102,5 +102,6 @@ class UserSignUpSerializer(serializers.Serializer):
     def create(self, data):
         """Handle user and profile creation."""
         data.pop('password_confirmation')
-        user = User.objects.create_user(**data)
+        user = User.objects.create_user(**data, is_student=True)
+        ProfileUser.objects.create(user=user)
         return user

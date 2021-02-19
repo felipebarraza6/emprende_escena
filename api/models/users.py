@@ -21,6 +21,7 @@ class User(ApiModel, AbstractUser):
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name', 'dni']
     
     initial_test_performed = models.BooleanField(default=False)
+    is_student = models.BooleanField(default=False)
     
     class Meta:
         verbose_name='Usuario'
@@ -42,5 +43,5 @@ class ProfileUser(ApiModel):
         verbose_name_plural = 'Usuarios - Perfiles'
     
     def __str__(self):
-        return self.user
+        return str(self.user)
 
