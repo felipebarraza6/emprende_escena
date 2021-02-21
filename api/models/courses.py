@@ -13,6 +13,7 @@ class Course(ApiModel):
     class Meta:
         verbose_name = 'Curso'
         verbose_name_plural = 'Cursos'
+        ordering = ['created']
 
     def __str__(self):
         return self.title

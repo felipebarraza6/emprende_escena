@@ -22,6 +22,7 @@ class QuestionTest(ApiModel):
     class Meta:
         verbose_name = 'Test - Pregunta'
         verbose_name_plural = 'Test - Preguntas'
+        ordering = ['created']
 
     def __str__(self):
         return self.title
@@ -35,6 +36,7 @@ class AlternativeQuestionTest(ApiModel):
     class Meta:
         verbose_name = 'Test - Alternativa'
         verbose_name_plural = 'Test - Alternativas'
+        ordering = ['created']
     
     def __str__(self):
         return self.title
@@ -50,13 +52,13 @@ class AnswerTest(ApiModel):
         verbose_name_plural = 'Test - Respuestas'
 
     def __str__(self):
-        return self.user
+        return str(self.user)
 
 
 class ResultTest(ApiModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
-    points_total = models.IntegerField()
+    points_total = models.IntegerField(blank=True, null=True)
     is_complete = models.BooleanField(default=False
             )    
 
@@ -65,4 +67,4 @@ class ResultTest(ApiModel):
         verbose_name_plural = 'Test - Resultados'
 
     def __str__(self):
-        return self.user
+        return str(self.user)
