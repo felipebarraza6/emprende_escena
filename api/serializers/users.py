@@ -2,21 +2,57 @@
 from django.contrib.auth import password_validation, authenticate
 from django.core.validators import RegexValidator
 
-from api.models import User, ProfileUser
+from api.models import (User, Test, Course, 
+        ProfileUser, ResultTest, ResultContest)
 from rest_framework.authtoken.models import Token
 
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
+class TestModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Test
+        fields = (
+            'id',
+            'title'
+        )
+
+class CourseModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = (
+            'id',
+            'title'
+        )
+
+class ResultContestModelSerializer(serializers.ModelSerializer):
+    course = CourseModelSerializer()
+    class Meta:
+        model = ResultContest
+        fields = (
+            'created',
+            'calification',
+            'code_travel',
+            'course'
+        )
+
+
+class ResultTestModelSerializer(serializers.ModelSerializer):
+    test = TestModelSerializer()
+    class Meta:
+        model = ResultTest
+        fields = (
+            'points_total',
+            'is_complete',
+            'test'
+        )
 
 class ProfileModelSerializer(serializers.ModelSerializer):
+    tests_performed = ResultTestModelSerializer(many=True)
+    approved_courses = ResultContestModelSerializer(many=True)
     class Meta:
         model = ProfileUser
         fields = (
-            'approved_courses',
-            'tests_performed'
-        )
-        read_only_fields = (
             'approved_courses',
             'tests_performed'
         )

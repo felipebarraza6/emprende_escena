@@ -1,5 +1,6 @@
 from django.db import models
-from .users import User
+from django.db.models.signals import post_save
+from .users import User, ProfileUser
 from api.models.utils import ApiModel
 
 
@@ -68,3 +69,13 @@ class ResultTest(ApiModel):
 
     def __str__(self):
         return str(self.user)
+
+def test_add_to_profile(sender, instance, **kwargs):
+    user = ProfileUser.objects.get(user=instance.user)
+    user.tests_performed.add(instance)
+    
+    return instance
+
+post_save.connect(test_add_to_profile, sender = ResultTest)
+
+

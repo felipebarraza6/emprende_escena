@@ -30,7 +30,7 @@ class PreRequisite(ApiModel):
         verbose_name_plural = 'Cursos - Pre requisitos'
 
     def __str__(self):
-        return self.course
+        return str(self.course)
     
 
 class Video(ApiModel):
@@ -41,6 +41,7 @@ class Video(ApiModel):
     class Meta: 
         verbose_name = 'Curso - Video'
         verbose_name_plural = 'Cursos - Videos'
+        ordering = ['created']
 
     def __str__(self):
         return self.title
@@ -54,6 +55,7 @@ class Resource(ApiModel):
     class Meta:
         verbose_name = 'Curso - Recurso'
         verbose_name_plural = 'Cursos -Recursos'
+        ordering = ['created']
 
     def __str__(self):
         return self.title

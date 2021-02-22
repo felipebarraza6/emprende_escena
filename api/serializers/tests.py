@@ -25,13 +25,13 @@ class ResultTestModelSerializer(serializers.ModelSerializer):
                     answer = get_answer_instance
                 )             
                 total_points+=get_answer_instance.points
-        ResultTest.objects.create(
-            user= data['user'],
-            test= data['test'],
-            points_total = total_points,
-            is_complete=True
-        )
-        User.objects.filter(id=data['user'].id).update(initial_test_performed=True)
+            ResultTest.objects.create(
+                user= data['user'],
+                test= data['test'],
+                points_total = total_points,
+                is_complete=True
+            )
+            User.objects.filter(id=data['user'].id).update(initial_test_performed=True)
         return data
 
 

@@ -20,7 +20,7 @@ class ProfileUserAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title',)
+    list_display = ('id', 'title', 'code_trip')
 
 @admin.register(PreRequisite)
 class PreRequisiteAdmin(admin.ModelAdmin):
@@ -40,11 +40,11 @@ class ResourceAdmin(admin.ModelAdmin):
 
 @admin.register(QuestionCourse)
 class QuestionCourseAdmin(admin.ModelAdmin):
-    list_display = ('id', 'course')
+    list_display = ('id', 'course', 'title')
 
 @admin.register(AlternativeQuestion)
 class AlternativeQuestionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'question')
+    list_display = ('id', 'question', 'title', 'is_correct')
 
 @admin.register(ResultContest)
 class ResultContestAdmin(admin.ModelAdmin):

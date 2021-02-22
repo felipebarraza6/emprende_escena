@@ -5,7 +5,6 @@ from rest_framework.permissions import (
      AllowAny,
      IsAuthenticated
   )
-from django_filters import rest_framework as filters
 from api.serializers import TestModelSerializer, ResultTestModelSerializer
 from api.models import Test, ResultTest, AnswerTest
 

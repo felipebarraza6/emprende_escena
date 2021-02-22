@@ -3,7 +3,7 @@ from django.db.models.signals import post_save
 
 from api.models.utils import ApiModel
 from .courses import Course
-from .users import User
+from .users import User, ProfileUser
 
 import json
 import requests
@@ -18,6 +18,7 @@ class QuestionCourse(ApiModel):
     class Meta:
         verbose_name = 'Curso - Pregunta'
         verbose_name_plural = 'Cursos - Preguntas'
+        ordering = ['created']
 
     def __str__(self):
         return self.title
@@ -31,6 +32,7 @@ class AlternativeQuestion(ApiModel):
     class Meta:
         verbose_name = 'Curso - Alternativa'
         verbose_name_plural = 'Curso - Alternativas'
+        ordering = ['created']
     
     def __str__(self):
         return self.title
@@ -41,7 +43,8 @@ class ResultContest(ApiModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     is_approved = models.BooleanField(default=False)
     code_travel = models.CharField(max_length=400, null=True, blank=True)
-    
+    calification = models.FloatField( null=True, blank=True)
+
     class Meta:
         verbose_name = 'Curso - Resultado de cuestionario'
         verbose_name_plural = 'Cursos - Resultados de cuestionarios'
@@ -60,10 +63,13 @@ class AnswerQuestion(ApiModel):
         verbose_name_plural = 'Cursos - Respuestas'
     
     def __str__(self):
-        return self.user
+        return str(self.user)
 
 
 def validate_corfo(sender, instance, **kwargs):
+    user = ProfileUser.objects.get(user=instance.user)
+    user.approved_courses.add(instance)
+
     url = "https://apitest.corfo.cl:9101/OAG/API_WS_MOOC/Validate"
     
     payload = {
