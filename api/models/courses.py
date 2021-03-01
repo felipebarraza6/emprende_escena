@@ -9,7 +9,7 @@ class Course(ApiModel):
     description = models.CharField(max_length=400)
     tutor_name = models.CharField(max_length=220)
     passing_score = models.IntegerField()
-
+    tutor_text = models.CharField(max_length=2000)
     class Meta:
         verbose_name = 'Curso'
         verbose_name_plural = 'Cursos'

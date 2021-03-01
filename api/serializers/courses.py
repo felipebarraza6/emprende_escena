@@ -115,7 +115,8 @@ class ListCourseModelSerializer(serializers.ModelSerializer):
             'image',
             'description',
             'tutor_name',
-            'pre_requisites'
+            'pre_requisites',
+            'tutor_text'
         )
 
 

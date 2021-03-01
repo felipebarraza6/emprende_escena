@@ -75,7 +75,8 @@ class UserModelSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'dni',
-            'profile'
+            'profile',
+            'initial_test_performed'
         )
 
 

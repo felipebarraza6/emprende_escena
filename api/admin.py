@@ -60,7 +60,7 @@ class QuestionTestAdmin(admin.ModelAdmin):
 
 @admin.register(AlternativeQuestionTest)
 class AlternativeQuestionTestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'question', 'points')
+    list_display = ('id', 'question', 'title','points',)
 
 @admin.register(AnswerTest)
 class AnswerTestAdmin(admin.ModelAdmin):

@@ -5,11 +5,17 @@ from api.models.utils import ApiModel
 from .courses import Course
 from .users import User, ProfileUser
 
+from requests_oauthlib import OAuth2Session 
+from oauthlib.oauth2 import BackendApplicationClient
+import requests_oauthlib 
 import json
 import requests
-import requests.packages.urllib3
-requests.packages.urllib3.disable_warnings()
+import requests.packages
+requests.packages.urllib3.disable_warnings
 
+import urllib3
+urllib3.disable_warnings()
+import oauth2 as oauth
 
 class QuestionCourse(ApiModel):
     title = models.CharField(max_length=1000)
@@ -69,6 +75,21 @@ class AnswerQuestion(ApiModel):
 def validate_corfo(sender, instance, **kwargs):
     user = ProfileUser.objects.get(user=instance.user)
     user.approved_courses.add(instance)
+    
+    client_id = '5d652985-93b7-407c-9365-05d7d83e629d'
+    client_secret = 'a6fa2019-0b05-4145-8d73-20478cd4f52b'
+    url_token = 'https://apitest.corfo.cl:9101/api/oauth/token'
+    
+    #consumer = oauth.Consumer(
+    #    key=client_id,
+    #    secret=client_secret
+    #)
+
+    #client = oauth.Client(consumer)
+    #resp, content = client.request(url_token, "GET")
+    #print(rest)
+    #print(content)
+
 
     url = "https://apitest.corfo.cl:9101/OAG/API_WS_MOOC/Validate"
     

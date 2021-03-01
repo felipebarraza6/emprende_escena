@@ -8,3 +8,5 @@ uwsgi
 django-rest-passwordreset
 pylint
 requests
+requests_oauthlib
+oauth2

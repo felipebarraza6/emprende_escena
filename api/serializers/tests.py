@@ -39,6 +39,7 @@ class AlternativeQuestionTestModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = AlternativeQuestionTest
         fields = (
+            'id',
             'title',
             'points'
         )
@@ -57,6 +58,7 @@ class QuestionTestModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuestionTest
         fields = (
+            'id',
             'title',
             'alternatives'
         )
@@ -74,6 +76,7 @@ class TestModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Test
         fields = (
+            'id',
             'title',
             'description',
             'questions'
