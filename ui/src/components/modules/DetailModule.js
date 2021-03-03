@@ -87,7 +87,7 @@ const DetailModule = () => {
             <Col span={24}>
               {state.resources.map((resource, index)=>
                   <Tooltip key={index} title={resource.title} >
-                  <a ref='noreferrer' href={`http://localhost:8000${resource.file_re}`}>
+                  <a ref='noreferrer' href={`http://localhost:8000${resource.file_re}`} target="__blank">
                   <FileTwoTone style={{fontSize:'40px', marginRight:'20px', marginBottom:'10px'}} />
                   </a>
                   </Tooltip>

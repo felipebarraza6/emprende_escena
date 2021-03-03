@@ -1,16 +1,16 @@
 import React, { useState, useContext } from 'react'
-import { notification, Button, Modal, Alert, Form, Select } from 'antd'
+import { notification, Input, Button, Modal, Alert, Form, Select } from 'antd'
 import { FormOutlined } from '@ant-design/icons'
 import { ModulesContext } from '../../containers/Modules'
 import api from '../../api/endpoints'
 const { Option } = Select
-
+const { TextArea } = Input
 
 const Evaluation = ({questions})=> {
 
   const { dispatch, state:Module } = useContext(ModulesContext)
   var module = Module.module
-
+  
   const [visible, setVisible] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -26,6 +26,7 @@ const Evaluation = ({questions})=> {
       <Modal 
         title={`Evaluacion - ${module.title} (${module.tutor_name})`} 
         style={{top:'30px'}}
+        width={'100%'}
         okText='ENVIAR RESPUESTAS'
         onCancel={onCancel}  
         visible={visible}
@@ -35,10 +36,10 @@ const Evaluation = ({questions})=> {
             {questions.map((question)=> 
             <Form.Item key={question.id} name={question.id} label={question.title} 
               rules={[{required:true, message:'Debes seleccionar una respuesta'}]}>
-                <Select placeholder='Selecciona una respuesta...'>
+                <Select placeholder='Selecciona una respuesta...' size='large' listItemHeight={10} listHeight={250}>
                   {question.alternatives.map((alternative)=>
-                    <Option key={alternative.id} value={alternative.id}>
-                      {alternative.title}
+                    <Option key={alternative.id} value={alternative.id}  >                       
+                        {alternative.title}                                                
                     </Option>
                   )}
                 </Select>

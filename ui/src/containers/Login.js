@@ -5,7 +5,7 @@ import { Form, Input, Button, Spin, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 
 import { AuthContext } from '../App'
-
+import { validate, clean, format, getCheckDigit} from 'rut.js'
 import logo from '../assets/img/white.png'
 
 import '../assets/css/login.css'
@@ -31,6 +31,9 @@ const Login = () => {
     const [data, setData] = React.useState(initialState)
 
     const handleInputChange = e => {        
+      if(e.target.name==='rut'){
+          console.log(validate(e.target.value))
+      }
         setData({
             ...data,
             [e.target.name]: e.target.value            

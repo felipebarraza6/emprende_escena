@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 
-const BASE_URL = 'http://localhost:8000'
+const BASE_URL = 'http://45.236.131.63:8000'
 
 
 export const INSTANCE = axios.create({
