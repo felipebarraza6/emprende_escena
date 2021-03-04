@@ -30,8 +30,10 @@ const LearningRoute = () => {
   return(
     <Row align='middle' justify='space-around'>
     {loading ? <Skeleton/ >:
-    <Col style={{marginTop:'10%'}}>
-    <Timeline>
+    <Col style={{marginTop:'3%'}}>
+    <Timeline
+        style={{backgroundColor:'white', padding:'70px', borderRadius:'15px', boxShadow:'10px 10px 10px rgba(0, 0, 0, 0.5)'}}
+      >      
       {modules.map((module)=> {
         var color= 'red'
         var aproved_course  = false
@@ -51,7 +53,20 @@ const LearningRoute = () => {
         }
 
         return(
-          <Timeline.Item color={color}  key={module.id}>{module.title} {aproved_course && <><Tag>{date_aprovedd}</Tag><Tag color='green'>{code}</Tag></> } </Timeline.Item>
+          <Timeline.Item 
+              color={color}  
+              key={module.id}>
+                {module.title} {aproved_course && 
+                    <>
+                      <Tag>
+                        {date_aprovedd}
+                      </Tag>
+                      <Tag color='green'>
+                        {code}
+                      </Tag>
+                    </> 
+                } 
+            </Timeline.Item>
         )
 
       })}

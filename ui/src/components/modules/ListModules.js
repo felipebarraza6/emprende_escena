@@ -67,17 +67,7 @@ const ListModules = () => {
                   bordered={false}
                   actions={[
                     <>
-                    {obj.id === APPROVED_COURSES.length + 1 && 
-                        <Button 
-                          type='primary'
-                          onClick={()=>dispatch(
-                            {
-                              type:'SET_VIEW', 
-                              is_retrieve:true, 
-                              module:obj, 
-                              id_module: obj.id,
-                              is_approved: false
-                            })}><EditOutlined /> Realizar Modulo</Button>}
+                    
                     {APPROVED_COURSES.map((approved)=>{
                         const course_id = obj.id
                         const approved_course = approved.course.id
@@ -89,6 +79,20 @@ const ListModules = () => {
                               Modulo Completado
                             </Button>
                           )
+                        }else {
+                          return (
+                          <Button 
+                          type='primary'
+                          onClick={()=>dispatch(
+                            {
+                              type:'SET_VIEW', 
+                              is_retrieve:true, 
+                              module:obj, 
+                              id_module: obj.id,
+                              is_approved: false
+                            })}><EditOutlined /> Realizar Modulo</Button>
+                          )
+
                         }
                       })
                     }

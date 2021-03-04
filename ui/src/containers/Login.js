@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Form, Input, Button, Spin, message } from 'antd';
+import { Form, Input, Button, Checkbox, Spin, message } from 'antd';
 
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 
@@ -17,6 +17,7 @@ const Login = () => {
     const { dispatch } = React.useContext(AuthContext)
     const [form] = Form.useForm();
     const [statusRut, setStatusRut] = React.useState(false)
+    const [isPassport, setIsPassport] = React.useState(false)
     const initialState = {
         first_name: "",
         last_name: "",
@@ -166,9 +167,22 @@ const Login = () => {
                   </Form.Item>
                   <Form.Item
                     name='rut'
-                    rules={[{ required: true, message: 'Ingresa tu rut'}, {min:8, message:'Debes ingresar 8 digitos como minimo'}]}                                 
+                    rules={[{ required: true, message: 'Debes completas este campo'}, {min:8, message:'Debes ingresar 8 digitos como minimo'}]}                                 
                     validateStatus={statusRut ? 'error' : 'success' }                    
-                  >                    
+                  >
+                    Utilizaras pasaporte? <Checkbox checked={isPassport} onChange={(e)=>{
+                        setIsPassport(e.target.checked)
+                        if(e.target.checked === true) {
+                          setStatusRut(false)
+                        }
+                      }}   />                 
+                    {isPassport ?    
+                    <Input 
+                    type='text'                      
+                    placeholder='Ingresa tu pasaporte'                      
+                    name='rut'                    
+                    
+                  />:
                     <Input 
                       type='text'                      
                       placeholder='Rut (ej: 9876543-1)'                      
@@ -188,6 +202,7 @@ const Login = () => {
                           }
                         }}
                     />
+                  }
                   </Form.Item>
                   </>
                 }
