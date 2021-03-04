@@ -15,6 +15,8 @@ import api from '../api/endpoints'
 
 const Login = () => {   
     const { dispatch } = React.useContext(AuthContext)
+    const [form] = Form.useForm();
+    const [statusRut, setStatusRut] = React.useState(false)
     const initialState = {
         first_name: "",
         last_name: "",
@@ -29,6 +31,7 @@ const Login = () => {
     }
 
     const [data, setData] = React.useState(initialState)
+    
 
     const handleInputChange = e => {        
       if(e.target.name==='rut'){
@@ -101,6 +104,7 @@ const Login = () => {
          
         }
         }
+        console.log(data)
    return(
         <div className="general-login">
           <div className="login-container">
@@ -109,21 +113,19 @@ const Login = () => {
               <Form
                 onFinish = { handleFormSubmit }
                 name="normal_login"
-                className="login-form"
-                initialValues={{ remember: true }}
+                className="login-form"                
               >
                 <Form.Item
                   name="email"
-                  rules={[{ required: true, message: 'Ingresa tu correo corporativo'}]}
+                  rules={[{ required: true, message: 'Ingresa tu correo corporativo', type: 'email', message: 'Seguro que es un correo?'}]}
                 >
                   <Input 
                     prefix={<UserOutlined className="site-form-item-icon" />}
                     type="email" 
                     placeholder="Email" 
                     value={data.email}
-                    name="email"
-                    onChange={handleInputChange}
-                    
+                    name="email"                    
+                    onChange={handleInputChange}                                       
                   />
                 </Form.Item>
                 {data.createUser &&
@@ -164,13 +166,27 @@ const Login = () => {
                   </Form.Item>
                   <Form.Item
                     name='rut'
-                    rules={[{ required: true, message: 'Ingresa tu rut'}]}
-                  >
+                    rules={[{ required: true, message: 'Ingresa tu rut'}, {min:8, message:'Debes ingresar 8 digitos como minimo'}]}                                 
+                    validateStatus={statusRut ? 'error' : 'success' }                    
+                  >                    
                     <Input 
-                      type='text'
-                      placeholder='Rut (ej: 9876543-1)'
+                      type='text'                      
+                      placeholder='Rut (ej: 9876543-1)'                      
                       name='rut'
-                      onChange={handleInputChange}
+                      onError={true}                      
+                      onBlur={(e)=>{                          
+                          if(validate(e.target.value)){                                                                      
+                              setData({
+                                ...data,
+                                [e.target.name]: format(e.target.value)                                
+                              })                                                        
+                              setStatusRut(false)
+                              message.success('Rut correcto')
+                          }else{
+                              setStatusRut(true)
+                              message.error('Rut Incorrecto')
+                          }
+                        }}
                     />
                   </Form.Item>
                   </>
