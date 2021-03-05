@@ -1,0 +1,81 @@
+version: '3'
+
+volumes:
+    local_postgres_data: {}
+    local_postgres_data_backups: {}
+    certs: {}
+    vhostd: {}
+    html: {}
+
+services:
+    postgres:
+        image: postgres:11
+        volumes:
+            - local_postgres_data:/var/lib/postgresql/data
+            - local_postgres_data_backups:/backups
+        ports:
+            - "5430:5432"
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: api
+
+    nginx_proxy:
+        image: jwilder/nginx-proxy
+        restart: always
+        ports:
+          - "80:80"
+          - "443:443"
+        volumes:
+          - /var/run/docker.sock:/tmp/docker.sock:ro
+          - certs:/etc/nginx/certs:ro
+          - vhostd:/etc/nginx/vhost.d
+          - html:/usr/share/nginx/html
+        labels:
+          - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+
+    letsencrypt:
+        image: jrcs/letsencrypt-nginx-proxy-companion
+        restart: always
+        environment:
+          - NGINX_PROXY_CONTAINER=nginx_proxy
+        volumes:
+          - certs:/etc/nginx/certs:rw
+          - vhostd:/etc/nginx/vhost.d
+          - html:/usr/share/nginx/html
+          - /var/run/docker.sock:/var/run/docker.sock:ro
+        depends_on:
+          - nginx_proxy
+
+    django: &django
+        build: 
+            context: ./learning_escena
+        image: api_escena
+        expose:
+          - "80"
+        environment:
+            - VIRTUAL_HOST=api.emprendescena.cl,www.api.emprendescena.cl
+            - LETSENCRYPT_HOST=api.emprendescena.cl,www.api.emprendescena.cl
+            - LETSENCRYPT_EMAIL=api@emprendescena.cl
+        
+        depends_on:
+            - nginx_proxy
+            - letsencrypt
+            - postgres
+            
+        volumes:
+            - .:/code     
+
+    react:
+        build: ./ui
+        image: emprendeescena_ui
+        expose:
+            - "80"
+        environment:
+            - VIRTUAL_HOST=emprendescena.cl,www.emprendescena.cl
+            - LETSENCRYPT_HOST=emprendescena.cl,www.emprendescena.cl
+            - LETSENCRYPT_EMAIL=app@emprendescena.cl
+        depends_on:
+            - django
+            - nginx_proxy
+            - letsencrypt
