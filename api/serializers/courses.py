@@ -31,14 +31,39 @@ class ResultContestModelSerializer(serializers.ModelSerializer):
 
                 if get_answer_instance.is_correct:
                     correct_answers+=1
-         
-        if correct_answers >= course.passing_score:
+
+        
+        if correct_answers == 1 or correct_answers == 2:
             ResultContest.objects.create(
                 course = course,
                 user = user,
-                is_approved = True,
+                is_approved = False,
                 code_travel= formating_code,
-                calification = correct_answers
+                calification = 4
+            )        
+        elif correct_answers == 3:
+            ResultContest.objects.create(
+                course = course,
+                user = user,
+                is_approved = False,
+                code_travel= formating_code,
+                calification = 5
+            )
+        elif correct_answers == 4:
+            ResultContest.objects.create(
+                course = course,
+                user = user,
+                is_approved = False,
+                code_travel= formating_code,
+                calification = 6
+            )        
+        elif(correct_answers == 5):
+            ResultContest.objects.create(
+                course = course,
+                user = user,
+                is_approved = False,
+                code_travel= formating_code,
+                calification = 7
             )
         else:
             raise serializers.ValidationError('Curso Reprobado')
