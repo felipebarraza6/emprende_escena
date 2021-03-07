@@ -56,6 +56,7 @@ const ListModules = () => {
             <Skeleton active avatar paragraph={{ rows: 20 }} />:
         <Row around='xs'>
           {state.courses.map((obj)=> {
+            let approved_cour = false
             return(
               <Col key={obj.id}  style={{marginBottom:'20px'}} >
                 <Card 
@@ -66,44 +67,36 @@ const ListModules = () => {
                   extra={<Tag color='blue'>{obj.tutor_name}</Tag>}
                   bordered={false}
                   actions={[
-                    <>
-                    
-                    {APPROVED_COURSES.map((approved)=>{
+                    <>                    
+                    {APPROVED_COURSES.map((approved)=>{                        
                         const course_id = obj.id
-                        const approved_course = approved.course.id
-
-                        if(approved_course === course_id) {
+                        const approved_course = approved.course.id                        
+                        if(approved_course === course_id) {       
+                          approved_cour=true                   
                           return(
-                            <Button disabled key={approved.course.id} type='dashed' style={{color:'black'}} >
+                            <Button disabled key={approved.course.id} type='dashed' syle={{color:'black'}} >
                               <CheckSquareFilled style={{color:'green', fontSize:'20px'}} />
                               Modulo Completado
                             </Button>
                           )
-                        }else {
-                          return (
-                          <Button 
-                          type='primary'
-                          onClick={()=>dispatch(
-                            {
-                              type:'SET_VIEW', 
-                              is_retrieve:true, 
-                              module:obj, 
-                              id_module: obj.id,
-                              is_approved: false
-                            })}><EditOutlined /> Realizar Modulo</Button>
-                          )
-
                         }
                       })
                     }
+                    {!approved_cour &&
+                      <Button 
+                        type='primary'
+                        onClick={()=>dispatch(
+                          {
+                            type:'SET_VIEW', 
+                            is_retrieve:true, 
+                            module:obj, 
+                            id_module: obj.id,
+                            is_approved: false
+                          })}><EditOutlined /> Realizar Modulo</Button>
+                      
+                    }
                     </>,
-                    <>
-                    {obj.id >  APPROVED_COURSES.length + 1 &&
-                      <Button disabled>No disponible</Button>
-                    }
-                    {obj.id === APPROVED_COURSES.length + 1 &&
-                        <>En progreso <Spin style={{marginLeft:'20px', marginTop:'6px'}} /></>
-                    }
+                    <>                    
                     {APPROVED_COURSES.map((approved)=>{
                       const course_id = obj.id
                       const approved_course = approved.course.id

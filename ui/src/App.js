@@ -6,6 +6,7 @@ import './App.css'
 
 import Home from './containers/Home'
 import Login from './containers/Login'
+import {INSTANCE_OAUTH2} from './api/config'
 
 export const AuthContext = React.createContext()
 
@@ -22,11 +23,13 @@ function App() {
   const [state, dispatch] = useReducer(login_reducer, initialState) 
 
   useEffect(()=> {
+    
     const access_token = JSON.parse(localStorage.getItem('access_token') || null)  
     const user = JSON.parse(localStorage.getItem('user') || null)
 
     async function get_user(user){
       const request = await api.user.get_profile(user).then((response)=> {
+          <INSTANCE_OAUTH2 />
           const access_token = JSON.parse(localStorage.getItem('access_token') || null)
           const user = response.user 
           dispatch({

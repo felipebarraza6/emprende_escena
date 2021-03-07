@@ -71,43 +71,6 @@ class AnswerQuestion(ApiModel):
 def validate_corfo(sender, instance, **kwargs):
     user = ProfileUser.objects.get(user=instance.user)
     user.approved_courses.add(instance)
-    
-    client_id = '5d652985-93b7-407c-9365-05d7d83e629d'
-    client_secret = 'a6fa2019-0b05-4145-8d73-20478cd4f52b'
-    url_token = 'https://apitest.corfo.cl:9101/api/oauth/token'
-    
-    client = BackendApplicationClient(client_id=client_id)
-    oauth = OAuth2Session(client=client)
-    token = oauth.fetch_token(token_url='https://apitest.corfo.cl:9101/api/oauth/token', client_id=client_id,
-        client_secret=client_secret)
-
-    print(token)    
-
-
-    url = "https://apitest.corfo.cl:9101/OAG/API_WS_MOOC/Validate"
-    
-    payload = {
-        "institucion": "3094",
-        "rut": instance.user.dni,
-        "contenido": instance.course.code_trip,
-        "nombreContenido": instance.course.title,
-        "codigoCertificacion": instance.code_travel,
-        "evaluacion": instance.calification,
-        "correo": instance.user.email
-    }
-    
-    to_json = json.dumps(payload)
-    
-    headers = {
-        'Authorization': 'Bearer HO2sYIduAnsMO9BTb38z9ADruBNeajIjKnH5w0frofzoDyxDCzozQ8',
-        'Content-Type': 'application/json',
-        'Cookie': 'Cookie_v2=!Oy3KhqW6EmabSjn9TCejadw0ZLdkiUh+AQUz3h0lMygeWE0fy2uPmIZq9L/zUZ31VIBaTvhrLICuiIs='
-    }    
-
-    response = requests.request("POST", url, headers=headers, verify=False,
-            data=to_json)
-    
-    return response
 
 post_save.connect(validate_corfo, sender= ResultContest)
 
