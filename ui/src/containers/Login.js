@@ -165,11 +165,7 @@ const Login = () => {
                       onChange={handleInputChange}
                     />
                   </Form.Item>
-                  <Form.Item
-                    name='rut'
-                    rules={[{ required: true, message: 'Debes completas este campo'}, {min:8, message:'Debes ingresar 8 digitos como minimo'}]}                                 
-                    validateStatus={statusRut ? 'error' : 'success' }                    
-                  >
+                 
                     Utilizaras pasaporte? <Checkbox checked={isPassport} onChange={(e)=>{
                         setIsPassport(e.target.checked)
                         if(e.target.checked === true) {
@@ -177,12 +173,23 @@ const Login = () => {
                         }
                       }}   />                 
                     {isPassport ?    
+                    <Form.Item
+                    name='rut'
+                    rules={[{ required: true, message: 'Debes completas este campo'}, {min:8, message:'Debes ingresar 8 digitos como minimo'}]}                                 
+                    validateStatus={statusRut ? 'error' : 'success' }                    
+                  >
                     <Input 
                     type='text'                      
                     placeholder='Ingresa tu pasaporte'                      
                     name='rut'                    
                     
-                  />:
+                    
+                  /></Form.Item>:
+                  <Form.Item
+                  name='rut'
+                  rules={[{ required: true, message: 'Debes completas este campo'}, {min:8, message:'Debes ingresar 8 digitos como minimo'}]}                                 
+                  validateStatus={statusRut ? 'error' : 'success' }                    
+                >
                     <Input 
                       type='text'                      
                       placeholder='Rut (ej: 9876543-1)'                      
@@ -202,8 +209,8 @@ const Login = () => {
                           }
                         }}
                     />
-                  }
-                  </Form.Item>
+                    </Form.Item>
+                  }                  
                   </>
                 }
                 <Form.Item

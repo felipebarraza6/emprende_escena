@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 
-const BASE_URL = 'https://api.emprendescena.cl'
+const BASE_URL = 'http://emprendescena.cl:8000'
 
 export const INSTANCE_OAUTH2 = axios.request({
     headers: { 
