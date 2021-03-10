@@ -29,7 +29,7 @@ function App() {
 
     async function get_user(user){
       const request = await api.user.get_profile(user).then((response)=> {
-          <INSTANCE_OAUTH2 />
+          
           const access_token = JSON.parse(localStorage.getItem('access_token') || null)
           const user = response.user 
           dispatch({
