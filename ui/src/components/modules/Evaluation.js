@@ -83,6 +83,14 @@ const Evaluation = ({questions})=> {
               message: 'Curso Completado',
               description: `${module.title}`
             })
+            setLoading(false)
+        }).catch((error)=> {
+          console.log(error)
+          notification.warning({
+            message: 'Reprobado',
+            description: 'Puedes volver a intentarlo'
+          })
+          setLoading(false)
         })
 
         return request
