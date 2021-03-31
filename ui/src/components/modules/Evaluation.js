@@ -1,10 +1,9 @@
 import React, { useState, useContext } from 'react'
-import { notification, Input, Button, Modal, Alert, Form, Select } from 'antd'
+import { notification, Button, Modal, Alert, Form, Select } from 'antd'
 import { FormOutlined } from '@ant-design/icons'
 import { ModulesContext } from '../../containers/Modules'
 import api from '../../api/endpoints'
 const { Option } = Select
-const { TextArea } = Input
 
 const Evaluation = ({questions})=> {
 
@@ -48,7 +47,7 @@ const Evaluation = ({questions})=> {
             )}
             <Alert 
               type='warning' 
-              message='Una vez enviadas tus respuestas no podras realizar nuevamente la evaluacion...' 
+              message='Tienes multiples intentos hasta aprobar le evaluación...' 
               showIcon 
               closable />
           </Form>

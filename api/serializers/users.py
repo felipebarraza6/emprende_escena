@@ -101,16 +101,16 @@ class UserLoginSerializer(serializers.Serializer):
 class UserSignUpSerializer(serializers.Serializer):
 
     email = serializers.EmailField(
-        validators=[UniqueValidator(queryset=User.objects.all())]
+        validators=[UniqueValidator(queryset=User.objects.all(), message='el correo ya existe, prueba con otro email. ')]
     )
 
     username = serializers.CharField(
         min_length=4,
         max_length=20,
-        validators=[UniqueValidator(queryset=User.objects.all())]
+        validators=[UniqueValidator(queryset=User.objects.all(), message="el usuario ya existe, prueba con otro nombre.")]
     )
 
-    dni = serializers.CharField(max_length=12, validators=[UniqueValidator(queryset=User.objects.all())])
+    dni = serializers.CharField(max_length=12, validators=[UniqueValidator(queryset=User.objects.all(), message='el rut ya existe, prueba con otro rut.')])
     first_name = serializers.CharField()
     last_name = serializers.CharField()
     # Password

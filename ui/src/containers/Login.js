@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Form, Input, Button, Checkbox, Spin, message } from 'antd';
+import { Form, Input, Button, Checkbox, Spin, message, notification } from 'antd';
 
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 
@@ -17,6 +17,7 @@ const Login = () => {
     const { dispatch } = React.useContext(AuthContext)
     const [form] = Form.useForm();
     const [statusRut, setStatusRut] = React.useState(false)
+    const [errors, setErrors] = React.useState(null)
     const [isPassport, setIsPassport] = React.useState(false)
     const initialState = {
         first_name: "",
@@ -36,14 +37,14 @@ const Login = () => {
 
     const handleInputChange = e => {        
       if(e.target.name==='rut'){
-          console.log(validate(e.target.value))
+          console.log()
       }
         setData({
             ...data,
             [e.target.name]: e.target.value            
         })        
     }
-
+    
     const handleFormSubmit = async(formData) => {        
 
         if(data.createUser){
@@ -68,12 +69,26 @@ const Login = () => {
               message.info(`Usuario creado: ${response.email}`)
 
             })).catch((error)=> {
+              var errors = error.response.data
               setData({
                 ...data,
                 isSubmitting:false,
-                errorMessage: null,
-                createUser: false
+                errorMessage: error.response.data,                
               })
+
+
+                Object.keys(errors).map((key, index)=> {                  
+                    let field = key
+                    let message = errors[key]
+                  if(key==='non_field_errors'){
+                    field='Error'
+                  }
+                    notification.error({message:`${field}: ${message}`})
+                })
+              
+
+              
+
               message.error('Error al crear usuario!')
             })
             return request
@@ -105,7 +120,7 @@ const Login = () => {
          
         }
         }
-        console.log(data)
+        
    return(
         <div className="general-login">
           <div className="login-container">
@@ -114,7 +129,8 @@ const Login = () => {
               <Form
                 onFinish = { handleFormSubmit }
                 name="normal_login"
-                className="login-form"                
+                className="login-form"       
+                layout='vertical'         
               >
                 <Form.Item
                   name="email"
@@ -176,7 +192,7 @@ const Login = () => {
                     <Form.Item
                     name='rut'
                     rules={[{ required: true, message: 'Debes completas este campo'}, {min:8, message:'Debes ingresar 8 digitos como minimo'}]}                                 
-                    validateStatus={statusRut ? 'error' : 'success' }                    
+                    validateStatus={statusRut ? 'error' : 'success' }                                        
                   >
                     <Input 
                     type='text'                      
@@ -188,7 +204,8 @@ const Login = () => {
                   <Form.Item
                   name='rut'
                   rules={[{ required: true, message: 'Debes completas este campo'}, {min:8, message:'Debes ingresar 8 digitos como minimo'}]}                                 
-                  validateStatus={statusRut ? 'error' : 'success' }                    
+                  validateStatus={statusRut ? 'error' : 'success' }       
+                  label="Agrega el (-) antes de tu digíto verificador"             
                 >
                     <Input 
                       type='text'                      
@@ -215,7 +232,11 @@ const Login = () => {
                 }
                 <Form.Item
                   name="password"
-                  rules={[{ required: true, message: 'Ingresa tu contraseña!' }]}
+                  rules={[
+                    { required: true, message: 'Ingresa tu contraseña!' },
+                    { min:8, message: 'Tu contraseña debe tener al menos 8 caracteres.' },
+                    { max:16, message: 'Tu contraseña no debe tener más de 16 caracteres.' }
+                  ]}
                 >
                   <Input
                     prefix={<LockOutlined className="site-form-item-icon" />}
@@ -230,7 +251,11 @@ const Login = () => {
                {data.createUser && 
                   <Form.Item
                     name="password_confirmation"
-                    rules={[{ required: true, message: 'Ingresa tu contraseña de confirmacion!' }]}
+                    rules={[
+                      { required: true, message: 'Ingresa tu contraseña de confirmacion!' },
+                      { min:8, message: 'Tu contraseña debe tener al menos 8 caracteres.' },
+                      { max:16, message: 'Tu contraseña no debe tener más de 16 caracteres.' }
+                    ]}
                   >
                     <Input
                       prefix={<LockOutlined className="site-form-item-icon" />}
