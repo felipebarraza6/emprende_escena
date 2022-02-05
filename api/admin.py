@@ -7,12 +7,12 @@ from django.contrib import admin
 from api.models import (User, Course, Video, Resource, QuestionCourse,
 AlternativeQuestion, ResultContest, Test, QuestionTest,
 AlternativeQuestionTest, AnswerTest, ResultTest, ProfileUser, PreRequisite,
-AnswerQuestion)
+AnswerQuestion, Module)
 
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('id','first_name', 'last_name', 'email', 'dni',)
+    list_display = ('id','first_name', 'last_name', 'email',)
 
 @admin.register(ProfileUser)
 class ProfileUserAdmin(admin.ModelAdmin):
@@ -28,7 +28,7 @@ class PreRequisiteAdmin(admin.ModelAdmin):
 
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'course', 'url',)
+    list_display = ('id', 'module', 'url',)
 
 @admin.register(AnswerQuestion)
 class AnswerQuestionAdmin(admin.ModelAdmin):
@@ -36,7 +36,7 @@ class AnswerQuestionAdmin(admin.ModelAdmin):
 
 @admin.register(Resource)
 class ResourceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'course', 'file_re',)
+    list_display = ('id', 'file_re',)
 
 @admin.register(QuestionCourse)
 class QuestionCourseAdmin(admin.ModelAdmin):
@@ -69,3 +69,9 @@ class AnswerTestAdmin(admin.ModelAdmin):
 @admin.register(ResultTest)
 class ResultTestAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'test', 'is_complete')
+
+
+@admin.register(Module)
+class ModuleAdmin(admin.ModelAdmin):
+    list_display = ("id", )
+
